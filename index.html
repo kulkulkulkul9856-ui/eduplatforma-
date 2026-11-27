@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UzMarket - Mini Marketplace + AI</title>
+    <link rel="stylesheet" href="css/style.css?v=2.6">
+    <link rel="stylesheet" href="css/responsive.css?v=2.6">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-store"></i>
+                    <span>Uz<span class="logo-accent">Market</span></span>
+                </a>
+
+                <div class="search-bar">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="Mahsulotlarni qidiring..." autocomplete="off">
+                    <div class="search-suggestions" id="searchSuggestions"></div>
+                </div>
+
+                <nav class="nav-links">
+                    <a href="index.html" class="nav-link active"><i class="fas fa-home"></i> Bosh sahifa</a>
+                    <a href="catalog.html" class="nav-link"><i class="fas fa-th-large"></i> Katalog</a>
+                    <a href="cart.html" class="nav-link cart-link">
+                        <i class="fas fa-shopping-cart"></i> Savatcha
+                        <span class="cart-count" id="cartCount">0</span>
+                    </a>
+                </nav>
+
+                <!-- Foydalanuvchi / Google Kirish / Admin qismi -->
+                <div class="user-auth-area" id="userAuthArea"></div>
+
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-link active"><i class="fas fa-home"></i> Bosh sahifa</a>
+            <a href="catalog.html" class="mobile-link"><i class="fas fa-th-large"></i> Katalog</a>
+            <a href="cart.html" class="mobile-link"><i class="fas fa-shopping-cart"></i> Savatcha</a>
+            <div class="mobile-auth-area" id="mobileAuthArea"></div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <span class="hero-badge"><i class="fas fa-robot"></i> AI Yordamchi bilan</span>
+                    <h1>Eng yaxshi mahsulotlarni <span class="gradient-text">AI yordamida</span> toping</h1>
+                    <p>Bizning aqlli AI yordamchimiz sizga kerakli mahsulotni topishda yordam beradi. Savol bering va
+                        mos tavsiyalar oling!</p>
+                    <div class="hero-buttons">
+                        <a href="catalog.html" class="btn btn-primary"><i class="fas fa-shopping-bag"></i> Xarid
+                            qilish</a>
+                        <button class="btn btn-secondary" onclick="openAIChat()"><i class="fas fa-robot"></i> AI bilan
+                            suhbat</button>
+                        <button class="btn btn-outline" onclick="openAIChat(); switchAIMode('game');"
+                            style="background: rgba(255,255,255,0.9);"><i class="fas fa-gamepad"></i> 🎮 AI O'yin
+                            (Chegirma yutish)</button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number">500+</span>
+                            <span class="stat-label">Mahsulotlar</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">50+</span>
+                            <span class="stat-label">Kategoriyalar</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">24/7</span>
+                            <span class="stat-label">AI Yordam</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="hero-card">
+                        <div class="floating-card card-1">
+                            <i class="fas fa-star"></i>
+                            <span>Eng yaxshi narxlar</span>
+                        </div>
+                        <div class="floating-card card-2">
+                            <i class="fas fa-truck"></i>
+                            <span>Tez yetkazib berish</span>
+                        </div>
+                        <div class="floating-card card-3">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Xavfsiz to'lov</span>
+                        </div>
+                        <div class="hero-illustration">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section">
+        <div class="container">
+            <div class="section-header">
+                <h2><i class="fas fa-th-large"></i> Kategoriyalar</h2>
+                <p>Kerakli kategoriyani tanlang</p>
+            </div>
+            <div class="categories-grid" id="categoriesGrid">
+                <!-- Filled by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured-section">
+        <div class="container">
+            <div class="section-header">
+                <h2><i class="fas fa-fire"></i> Tavsiya etilgan mahsulotlar</h2>
+                <p>Eng mashhur va sifatli mahsulotlar</p>
+            </div>
+            <div class="products-grid" id="featuredProducts">
+                <!-- Filled by JS -->
+            </div>
+            <div class="section-footer">
+                <a href="catalog.html" class="btn btn-outline">Barcha mahsulotlarni ko'rish <i
+                        class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Products -->
+    <section class="new-products-section">
+        <div class="container">
+            <div class="section-header">
+                <h2><i class="fas fa-sparkles"></i> Yangi mahsulotlar</h2>
+                <p>Eng so'nggi qo'shilgan mahsulotlar</p>
+            </div>
+            <div class="products-grid" id="newProducts">
+                <!-- Filled by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Banner -->
+    <section class="ai-banner">
+        <div class="container">
+            <div class="ai-banner-content">
+                <div class="ai-banner-text">
+                    <h2><i class="fas fa-robot"></i> Aqlli AI Yordamchi</h2>
+                    <p>Sun'iy intellekt yordamida o'zingizga kerakli mahsulotni bir zumda toping yoki istalgan mavzuda
+                        erkin suhbatlashing!</p>
+                    <p class="ai-example">"Eng yangi telefonlarni ko'rsat" yoki "500 ming so'mga sovg'a qidiryapman" deb
+                        ayting yoki yozing.</p>
+                    <button class="btn btn-primary btn-glow" onclick="openAIChat()">
+                        <i class="fas fa-comments"></i> AI bilan suhbat
+                    </button>
+                </div>
+                <div class="ai-banner-visual">
+                    <div class="ai-circle">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="index.html" class="footer-logo">
+                        <i class="fas fa-store"></i> Uz<span>Market</span>
+                    </a>
+                    <p>AI yordamchi bilan ishlaydigan zamonaviy marketplace platformasi.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Sahifalar</h4>
+                    <a href="index.html">Bosh sahifa</a>
+                    <a href="catalog.html">Katalog</a>
+                    <a href="cart.html">Savatcha</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Kategoriyalar</h4>
+                    <a href="catalog.html?category=Telefonlar">Telefonlar</a>
+                    <a href="catalog.html?category=Noutbuk+va+Kompyuterlar">Noutbuk va Kompyuterlar</a>
+                    <a href="catalog.html?category=Oziq-ovqat">Oziq-ovqat</a>
+                    <a href="catalog.html?category=Kiyimlar">Kiyimlar</a>
+                    <a href="catalog.html?category=Uy+jihozlari">Uy jihozlari</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Aloqa</h4>
+                    <p><i class="fas fa-phone"></i> +998 90 123 45 67</p>
+                    <p><i class="fas fa-envelope"></i> info@uzmarket.uz</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Toshkent, O'zbekiston</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 UzMarket. Barcha huquqlar himoyalangan. | Kurs Ishi - Mini Marketplace + AI</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AI Chat & Game Widget -->
+    <div class="ai-chat-widget" id="aiChatWidget">
+        <div class="ai-chat-header">
+            <div class="ai-header-main">
+                <div class="ai-chat-title">
+                    <i class="fas fa-robot"></i>
+                    <span>UzMarket AI</span>
+                </div>
+                <div class="ai-chat-controls">
+                    <button onclick="clearChat()" title="Suhbatni tozalash"><i class="fas fa-trash"></i></button>
+                    <button onclick="closeAIChat()" title="Yopish"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            <!-- Tabs: Chat vs Game -->
+            <div class="ai-tabs">
+                <div class="ai-tab-btn active" id="tabChat" onclick="switchAIMode('chat')"><i
+                        class="fas fa-comments"></i> AI Suhbat</div>
+                <div class="ai-tab-btn" id="tabGame" onclick="switchAIMode('game')"><i class="fas fa-gamepad"></i> AI
+                    O'yin (Narxni Top!)</div>
+            </div>
+        </div>
+
+        <!-- Chat View -->
+        <div class="ai-chat-messages" id="aiChatMessages">
+            <div class="ai-message bot">
+                <div class="ai-message-avatar"><i class="fas fa-robot"></i></div>
+                <div class="ai-message-content">
+                    <p>Assalomu alaykum! 👋 Yaxshimisiz?</p>
+                    <p>Men sizning <strong>UzMarket AI</strong> yordamchingizman. Menga xohlagan savolingizni bering
+                        yoki nima qidirayotganingizni ayting — do'kondan eng yaxshisini topib beraman!</p>
+                    <ul>
+                        <li>💰 "250 mingdan kam narsalarni ko'rsat"</li>
+                        <li>📱 "Yangi smartfonlarni ko'rsat"</li>
+                        <li>🍯 "Tog' asali qancha turadi?"</li>
+                        <li>💬 "Salom, qalaysan? (ChatGPT kabi suhbat)"</li>
+                        <li>🎮 "Keling, o'yin o'ynaymiz"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive AI Game View -->
+        <div class="ai-game-container" id="aiGameContainer" style="display: none;">
+            <!-- Filled by JS -->
+        </div>
+
+        <!-- Quick chips -->
+        <div class="ai-quick-chips" id="aiQuickChips">
+            <button class="chip-btn" onclick="sendAIMessage('Telefonlar bo\'limini ko\'rsat')">📱 Telefonlar</button>
+            <button class="chip-btn" onclick="sendAIMessage('Tabiiy tog\' asali haqida aytib ber')">🍯 Tog'
+                Asali</button>
+            <button class="chip-btn" onclick="sendAIMessage('Dasturlash nima?')">💻 Dasturlash</button>
+            <button class="chip-btn" onclick="sendAIMessage('Menga qiziqarli latifa aytib ber')">😄 Latifa ayt</button>
+            <button class="chip-btn" onclick="switchAIMode('game')">🎮 AI O'yin</button>
+        </div>
+
+        <!-- Input Bar -->
+        <div class="ai-chat-input">
+            <input type="text" id="aiInput" placeholder="Savol bering yoki xabar yozing..."
+                onkeypress="handleAIKeypress(event)">
+            <button onclick="sendAIMessage()" id="aiSendBtn" title="Yuborish"><i
+                    class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <!-- AI Chat Toggle Button -->
+    <button class="ai-chat-toggle" id="aiChatToggle" onclick="toggleAIChat()">
+        <i class="fas fa-robot"></i>
+        <span class="ai-chat-badge">AI</span>
+    </button>
+
+    <!-- Product Modal -->
+    <div class="modal-overlay" id="productModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeProductModal()"><i class="fas fa-times"></i></button>
+            <div class="modal-body" id="modalBody">
+                <!-- Filled by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/data.js?v=2.6"></script>
+    <script src="js/app.js?v=2.6"></script>
+    <script src="js/ai-chat.js?v=2.6"></script>
+    <script>
+        if (typeof initApp === 'function') {
+            initApp();
+        }
+    </script>
+</body>
+
+</html>

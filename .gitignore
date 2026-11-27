@@ -1,0 +1,13 @@
+# Operatsion tizim fayllari
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Muharrir sozlamalari
+.vscode/
+.idea/
+
+# Vaqtinchalik fayllar
+*.tmp
+*.log
+

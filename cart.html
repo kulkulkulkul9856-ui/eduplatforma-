@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savatcha - UzMarket</title>
+    <link rel="stylesheet" href="css/style.css?v=2.6">
+    <link rel="stylesheet" href="css/responsive.css?v=2.6">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-store"></i>
+                    <span>Uz<span class="logo-accent">Market</span></span>
+                </a>
+
+                <div class="search-bar">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="Mahsulotlarni qidiring..." autocomplete="off">
+                    <div class="search-suggestions" id="searchSuggestions"></div>
+                </div>
+
+                <nav class="nav-links">
+                    <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Bosh sahifa</a>
+                    <a href="catalog.html" class="nav-link"><i class="fas fa-th-large"></i> Katalog</a>
+                    <a href="cart.html" class="nav-link cart-link active">
+                        <i class="fas fa-shopping-cart"></i> Savatcha
+                        <span class="cart-count" id="cartCount">0</span>
+                    </a>
+                </nav>
+
+                <!-- Foydalanuvchi / Google Kirish / Admin qismi -->
+                <div class="user-auth-area" id="userAuthArea"></div>
+
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-link"><i class="fas fa-home"></i> Bosh sahifa</a>
+            <a href="catalog.html" class="mobile-link"><i class="fas fa-th-large"></i> Katalog</a>
+            <a href="cart.html" class="mobile-link active"><i class="fas fa-shopping-cart"></i> Savatcha</a>
+            <div class="mobile-auth-area" id="mobileAuthArea"></div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1><i class="fas fa-shopping-cart"></i> Savatcha</h1>
+            <div class="breadcrumb">
+                <a href="index.html">Bosh sahifa</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Savatcha</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Content -->
+    <section class="cart-section">
+        <div class="container">
+            <!-- Empty Cart -->
+            <div class="empty-cart" id="emptyCart" style="display: none;">
+                <i class="fas fa-shopping-cart"></i>
+                <h2>Savatcha bo'sh</h2>
+                <p>Hali hech qanday mahsulot qo'shilmagan</p>
+                <a href="catalog.html" class="btn btn-primary"><i class="fas fa-shopping-bag"></i> Xarid qilish</a>
+            </div>
+
+            <!-- Cart with items -->
+            <div class="cart-layout" id="cartLayout">
+                <div class="cart-items" id="cartItems">
+                    <!-- Filled by JS -->
+                </div>
+
+                <div class="cart-summary">
+                    <h3>Buyurtma xulosasi</h3>
+                    <div class="summary-row">
+                        <span>Mahsulotlar soni:</span>
+                        <span id="totalItems">0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Jami narx:</span>
+                        <span id="totalPrice">0 so'm</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Yetkazib berish:</span>
+                        <span class="free-delivery">Bepul</span>
+                    </div>
+                    <div class="summary-row" id="discountRow"
+                        style="display: none; color: var(--success); font-weight: 700;">
+                        <span>Chegirma:</span>
+                        <span id="discountAmount">-0 so'm</span>
+                    </div>
+                    <div class="promo-box">
+                        <input type="text" id="promoInput" placeholder="Promo-kod (AI-GOLIB-10)">
+                        <button type="button" onclick="applyPromoCode()">Qo'llash</button>
+                    </div>
+                    <div id="promoMessage"></div>
+                    <div class="summary-divider"></div>
+                    <div class="summary-row summary-total">
+                        <span>Umumiy:</span>
+                        <span id="grandTotal">0 so'm</span>
+                    </div>
+                    <button class="btn btn-primary btn-full" onclick="showOrderForm()">
+                        <i class="fas fa-credit-card"></i> Buyurtma berish
+                    </button>
+                    <a href="catalog.html" class="btn btn-outline btn-full">
+                        <i class="fas fa-arrow-left"></i> Xaridni davom ettirish
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Form Modal -->
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal-content order-modal">
+            <button class="modal-close" onclick="closeOrderModal()"><i class="fas fa-times"></i></button>
+            <div class="order-form-container">
+                <h2><i class="fas fa-file-invoice"></i> Buyurtma berish</h2>
+                <div style="margin: 14px 0 16px;" id="cartGoogleQuickAuth">
+                    <button type="button" class="btn-continue-google btn-continue-google-full" onclick="openGoogleChooserModal()" title="Google hisobingiz bilan tezkor to'ldirish">
+                        <svg class="google-icon-svg" viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+                        </svg>
+                        <span style="font-size: 15px;">Continue with Google</span>
+                    </button>
+                    <div class="auth-divider">
+                        <span>yoki ma'lumotlarni qo'lda to'ldiring</span>
+                    </div>
+                </div>
+                <form id="orderForm" onsubmit="submitOrder(event)">
+                    <div class="form-group">
+                        <label for="customerName"><i class="fas fa-user"></i> Ism familiya *</label>
+                        <input type="text" id="customerName" required placeholder="Ismingizni kiriting">
+                    </div>
+                    <div class="form-group">
+                        <label for="customerPhone"><i class="fas fa-phone"></i> Telefon raqam *</label>
+                        <input type="tel" id="customerPhone" required placeholder="+998 90 123 45 67"
+                            pattern="\+?[0-9\s\-]+" title="Telefon raqamni to'g'ri kiriting">
+                    </div>
+                    <div class="form-group">
+                        <label for="customerAddress"><i class="fas fa-map-marker-alt"></i> Manzil *</label>
+                        <textarea id="customerAddress" required placeholder="To'liq manzilingizni kiriting"
+                            rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerComment"><i class="fas fa-comment"></i> Izoh (ixtiyoriy)</label>
+                        <textarea id="customerComment" placeholder="Qo'shimcha izoh..." rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-credit-card"></i> To'lov usuli *</label>
+                        <div class="payment-options">
+                            <label class="payment-option">
+                                <input type="radio" name="payment" value="cash" checked>
+                                <span><i class="fas fa-money-bill-wave"></i> Naqd pul</span>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="payment" value="card">
+                                <span><i class="fas fa-credit-card"></i> Plastik karta</span>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="payment" value="click">
+                                <span><i class="fas fa-mobile-alt"></i> Click/Payme</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="order-summary-mini">
+                        <h4>Buyurtma:</h4>
+                        <div id="orderSummaryItems"></div>
+                        <div class="summary-divider"></div>
+                        <div class="summary-row summary-total">
+                            <span>Jami:</span>
+                            <span id="orderTotal">0 so'm</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full btn-glow">
+                        <i class="fas fa-check-circle"></i> Buyurtmani tasdiqlash
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Success Modal -->
+    <div class="modal-overlay" id="orderSuccessModal">
+        <div class="modal-content success-modal">
+            <div class="success-content"> 
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2>Buyurtma qabul qilindi! 🎉</h2>
+                <p>Buyurtma raqamingiz: <strong id="orderNumber"></strong></p>
+                <p>Tez orada siz bilan bog'lanamiz.</p>
+                <a href="index.html" class="btn btn-primary"><i class="fas fa-home"></i> Bosh sahifaga qaytish</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="index.html" class="footer-logo">
+                        <i class="fas fa-store"></i> Uz<span>Market</span>
+                    </a>
+                    <p>AI yordamchi bilan ishlaydigan zamonaviy marketplace platformasi.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Sahifalar</h4>
+                    <a href="index.html">Bosh sahifa</a>
+                    <a href="catalog.html">Katalog</a>
+                    <a href="cart.html">Savatcha</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Kategoriyalar</h4>
+                    <a href="catalog.html?category=Telefonlar">Telefonlar</a>
+                    <a href="catalog.html?category=Noutbuk+va+Kompyuterlar">Noutbuk va Kompyuterlar</a>
+                    <a href="catalog.html?category=Oziq-ovqat">Oziq-ovqat</a>
+                    <a href="catalog.html?category=Kiyimlar">Kiyimlar</a>
+                    <a href="catalog.html?category=Uy+jihozlari">Uy jihozlari</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Aloqa</h4>
+                    <p><i class="fas fa-phone"></i> +998 90 123 45 67</p>
+                    <p><i class="fas fa-envelope"></i> info@uzmarket.uz</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Toshkent, O'zbekiston</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 UzMarket. Barcha huquqlar himoyalangan. | Kurs Ishi - Mini Marketplace + AI</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AI Chat & Game Widget -->
+    <div class="ai-chat-widget" id="aiChatWidget">
+        <div class="ai-chat-header">
+            <div class="ai-header-main">
+                <div class="ai-chat-title">
+                    <i class="fas fa-robot"></i>
+                    <span>UzMarket AI</span>
+                </div>
+                <div class="ai-chat-controls">
+                    <button onclick="clearChat()" title="Suhbatni tozalash"><i class="fas fa-trash"></i></button>
+                    <button onclick="closeAIChat()" title="Yopish"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            <!-- Tabs: Chat vs Game -->
+            <div class="ai-tabs">
+                <div class="ai-tab-btn active" id="tabChat" onclick="switchAIMode('chat')"><i
+                        class="fas fa-comments"></i> AI Suhbat</div>
+                <div class="ai-tab-btn" id="tabGame" onclick="switchAIMode('game')"><i class="fas fa-gamepad"></i> AI
+                    O'yin (Narxni Top!)</div>
+            </div>
+        </div>
+
+        <!-- Chat View -->
+        <div class="ai-chat-messages" id="aiChatMessages">
+            <div class="ai-message bot">
+                <div class="ai-message-avatar"><i class="fas fa-robot"></i></div>
+                <div class="ai-message-content">
+                    <p>Assalomu alaykum! 👋 Yaxshimisiz?</p>
+                    <p>Men sizning <strong>UzMarket AI</strong> yordamchingizman. Menga xohlagan savolingizni bering
+                        yoki nima qidirayotganingizni ayting — do'kondan eng yaxshisini topib beraman!</p>
+                    <ul>
+                        <li>💰 "250 mingdan kam narsalarni ko'rsat"</li>
+                        <li>📱 "Yangi smartfonlarni ko'rsat"</li>
+                        <li>🍯 "Tog' asali qancha turadi?"</li>
+                        <li>💬 "Salom, qalaysan? (ChatGPT kabi suhbat)"</li>
+                        <li>🎮 "Keling, o'yin o'ynaymiz"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive AI Game View -->
+        <div class="ai-game-container" id="aiGameContainer" style="display: none;">
+            <!-- Filled by JS -->
+        </div>
+
+        <!-- Quick chips -->
+        <div class="ai-quick-chips" id="aiQuickChips">
+            <button class="chip-btn" onclick="sendAIMessage('Telefonlar bo\'limini ko\'rsat')">📱 Telefonlar</button>
+            <button class="chip-btn" onclick="sendAIMessage('Tabiiy tog\' asali haqida aytib ber')">🍯 Tog'
+                Asali</button>
+            <button class="chip-btn" onclick="sendAIMessage('Dasturlash nima?')">💻 Dasturlash</button>
+            <button class="chip-btn" onclick="sendAIMessage('Menga qiziqarli latifa aytib ber')">😄 Latifa ayt</button>
+            <button class="chip-btn" onclick="switchAIMode('game')">🎮 AI O'yin</button>
+        </div>
+
+        <!-- Input Bar -->
+        <div class="ai-chat-input">
+            <input type="text" id="aiInput" placeholder="Savol bering yoki xabar yozing..."
+                onkeypress="handleAIKeypress(event)">
+            <button onclick="sendAIMessage()" id="aiSendBtn" title="Yuborish"><i
+                    class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+    <button class="ai-chat-toggle" id="aiChatToggle" onclick="toggleAIChat()">
+        <i class="fas fa-robot"></i>
+        <span class="ai-chat-badge">AI</span>
+    </button>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/data.js?v=2.6"></script>
+    <script src="js/app.js?v=2.6"></script>
+    <script src="js/cart.js?v=2.6"></script>
+    <script src="js/ai-chat.js?v=2.6"></script>
+    <script>
+        if (typeof initApp === 'function') {
+            initApp();
+        }
+        if (typeof initCart === 'function') {
+            initCart();
+        }
+    </script>
+</body>
+
+</html>

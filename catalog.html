@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katalog - UzMarket</title>
+    <link rel="stylesheet" href="css/style.css?v=2.6">
+    <link rel="stylesheet" href="css/responsive.css?v=2.6">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-store"></i>
+                    <span>Uz<span class="logo-accent">Market</span></span>
+                </a>
+
+                <div class="search-bar">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="Mahsulotlarni qidiring..." autocomplete="off">
+                    <div class="search-suggestions" id="searchSuggestions"></div>
+                </div>
+
+                <nav class="nav-links">
+                    <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Bosh sahifa</a>
+                    <a href="catalog.html" class="nav-link active"><i class="fas fa-th-large"></i> Katalog</a>
+                    <a href="cart.html" class="nav-link cart-link">
+                        <i class="fas fa-shopping-cart"></i> Savatcha
+                        <span class="cart-count" id="cartCount">0</span>
+                    </a>
+                </nav>
+
+                <!-- Foydalanuvchi / Google Kirish / Admin qismi -->
+                <div class="user-auth-area" id="userAuthArea"></div>
+
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-link"><i class="fas fa-home"></i> Bosh sahifa</a>
+            <a href="catalog.html" class="mobile-link active"><i class="fas fa-th-large"></i> Katalog</a>
+            <a href="cart.html" class="mobile-link"><i class="fas fa-shopping-cart"></i> Savatcha</a>
+            <div class="mobile-auth-area" id="mobileAuthArea"></div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1><i class="fas fa-th-large"></i> Mahsulotlar katalogi</h1>
+            <div class="breadcrumb">
+                <a href="index.html">Bosh sahifa</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Katalog</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Catalog Content -->
+    <section class="catalog-section">
+        <div class="container">
+            <div class="catalog-layout">
+                <!-- Sidebar Filters -->
+                <aside class="catalog-sidebar" id="catalogSidebar">
+                    <div class="filter-header">
+                        <h3><i class="fas fa-filter"></i> Filtrlar</h3>
+                        <button class="filter-reset" onclick="resetFilters()"><i class="fas fa-redo"></i>
+                            Tozalash</button>
+                    </div>
+
+                    <!-- Category Filter -->
+                    <div class="filter-group">
+                        <h4>Kategoriya</h4>
+                        <div class="filter-options" id="categoryFilters">
+                            <!-- Filled by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Price Filter -->
+                    <div class="filter-group">
+                        <h4>Narx oralig'i</h4>
+                        <div class="price-range">
+                            <div class="price-inputs">
+                                <input type="number" id="priceMin" placeholder="Min" min="0">
+                                <span>-</span>
+                                <input type="number" id="priceMax" placeholder="Max">
+                            </div>
+                            <input type="range" id="priceSlider" min="0" max="50000000" step="100000" value="50000000">
+                            <div class="price-labels">
+                                <span>0 so'm</span>
+                                <span id="priceSliderValue">50 000 000 so'm</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sort -->
+                    <div class="filter-group">
+                        <h4>Saralash</h4>
+                        <select id="sortSelect" class="filter-select">
+                            <option value="default">Standart</option>
+                            <option value="price-asc">Narx: Arzondan qimmmatga</option>
+                            <option value="price-desc">Narx: Qimmatdan arzonga</option>
+                            <option value="name-asc">Nomi: A dan Z gacha</option>
+                            <option value="name-desc">Nomi: Z dan A gacha</option>
+                            <option value="rating">Reyting bo'yicha</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-primary btn-full" onclick="applyFilters()">
+                        <i class="fas fa-search"></i> Qidirish
+                    </button>
+                </aside>
+
+                <!-- Products Grid -->
+                <div class="catalog-main">
+                    <div class="catalog-toolbar">
+                        <div class="results-count">
+                            <span id="resultsCount">0</span> ta mahsulot topildi
+                        </div>
+                        <div class="view-options">
+                            <button class="view-btn active" onclick="setView('grid')" id="gridViewBtn">
+                                <i class="fas fa-th-large"></i>
+                            </button>
+                            <button class="view-btn" onclick="setView('list')" id="listViewBtn">
+                                <i class="fas fa-list"></i>
+                            </button>
+                        </div>
+                        <button class="mobile-filter-btn" onclick="toggleSidebar()">
+                            <i class="fas fa-filter"></i> Filtrlar
+                        </button>
+                    </div>
+
+                    <div class="products-grid" id="catalogProducts">
+                        <!-- Filled by JS -->
+                    </div>
+
+                    <!-- No Results -->
+                    <div class="no-results" id="noResults" style="display: none;">
+                        <i class="fas fa-search"></i>
+                        <h3>Mahsulot topilmadi</h3>
+                        <p>Filtrlarni o'zgartirib qayta qidirib ko'ring</p>
+                        <button class="btn btn-primary" onclick="resetFilters()">Filtrlarni tozalash</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="index.html" class="footer-logo">
+                        <i class="fas fa-store"></i> Uz<span>Market</span>
+                    </a>
+                    <p>AI yordamchi bilan ishlaydigan zamonaviy marketplace platformasi.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Sahifalar</h4>
+                    <a href="index.html">Bosh sahifa</a>
+                    <a href="catalog.html">Katalog</a>
+                    <a href="cart.html">Savatcha</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Kategoriyalar</h4>
+                    <a href="catalog.html?category=Telefonlar">Telefonlar</a>
+                    <a href="catalog.html?category=Noutbuk+va+Kompyuterlar">Noutbuk va Kompyuterlar</a>
+                    <a href="catalog.html?category=Oziq-ovqat">Oziq-ovqat</a>
+                    <a href="catalog.html?category=Kiyimlar">Kiyimlar</a>
+                    <a href="catalog.html?category=Uy+jihozlari">Uy jihozlari</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Aloqa</h4>
+                    <p><i class="fas fa-phone"></i> +998 90 123 45 67</p>
+                    <p><i class="fas fa-envelope"></i> info@uzmarket.uz</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Toshkent, O'zbekiston</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 UzMarket. Barcha huquqlar himoyalangan. | Kurs Ishi - Mini Marketplace + AI</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AI Chat & Game Widget -->
+    <div class="ai-chat-widget" id="aiChatWidget">
+        <div class="ai-chat-header">
+            <div class="ai-header-main">
+                <div class="ai-chat-title">
+                    <i class="fas fa-robot"></i>
+                    <span>UzMarket AI</span>
+                </div>
+                <div class="ai-chat-controls">
+                    <button onclick="clearChat()" title="Suhbatni tozalash"><i class="fas fa-trash"></i></button>
+                    <button onclick="closeAIChat()" title="Yopish"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            <!-- Tabs: Chat vs Game -->
+            <div class="ai-tabs">
+                <div class="ai-tab-btn active" id="tabChat" onclick="switchAIMode('chat')"><i
+                        class="fas fa-comments"></i> AI Suhbat</div>
+                <div class="ai-tab-btn" id="tabGame" onclick="switchAIMode('game')"><i class="fas fa-gamepad"></i> AI
+                    O'yin (Narxni Top!)</div>
+            </div>
+        </div>
+
+        <!-- Chat View -->
+        <div class="ai-chat-messages" id="aiChatMessages">
+            <div class="ai-message bot">
+                <div class="ai-message-avatar"><i class="fas fa-robot"></i></div>
+                <div class="ai-message-content">
+                    <p>Assalomu alaykum! 👋 Yaxshimisiz?</p>
+                    <p>Men sizning <strong>UzMarket AI</strong> yordamchingizman. Menga xohlagan savolingizni bering
+                        yoki nima qidirayotganingizni ayting — do'kondan eng yaxshisini topib beraman!</p>
+                    <ul>
+                        <li>💰 "250 mingdan kam narsalarni ko'rsat"</li>
+                        <li>📱 "Yangi smartfonlarni ko'rsat"</li>
+                        <li>🍯 "Tog' asali qancha turadi?"</li>
+                        <li>💬 "Salom, qalaysan? (ChatGPT kabi suhbat)"</li>
+                        <li>🎮 "Keling, o'yin o'ynaymiz"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive AI Game View -->
+        <div class="ai-game-container" id="aiGameContainer" style="display: none;">
+            <!-- Filled by JS -->
+        </div>
+
+        <!-- Quick chips -->
+        <div class="ai-quick-chips" id="aiQuickChips">
+            <button class="chip-btn" onclick="sendAIMessage('Telefonlar bo\'limini ko\'rsat')">📱 Telefonlar</button>
+            <button class="chip-btn" onclick="sendAIMessage('Tabiiy tog\' asali haqida aytib ber')">🍯 Tog'
+                Asali</button>
+            <button class="chip-btn" onclick="sendAIMessage('Dasturlash nima?')">💻 Dasturlash</button>
+            <button class="chip-btn" onclick="sendAIMessage('Menga qiziqarli latifa aytib ber')">😄 Latifa ayt</button>
+            <button class="chip-btn" onclick="switchAIMode('game')">🎮 AI O'yin</button>
+        </div>
+
+        <!-- Input Bar -->
+        <div class="ai-chat-input">
+            <input type="text" id="aiInput" placeholder="Savol bering yoki xabar yozing..."
+                onkeypress="handleAIKeypress(event)">
+            <button onclick="sendAIMessage()" id="aiSendBtn" title="Yuborish"><i
+                    class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+    <button class="ai-chat-toggle" id="aiChatToggle" onclick="toggleAIChat()">
+        <i class="fas fa-robot"></i>
+        <span class="ai-chat-badge">AI</span>
+    </button>
+
+    <!-- Product Modal -->
+    <div class="modal-overlay" id="productModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeProductModal()"><i class="fas fa-times"></i></button>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/data.js?v=2.6"></script>
+    <script src="js/app.js?v=2.6"></script>
+    <script src="js/catalog.js?v=2.6"></script>
+    <script src="js/ai-chat.js?v=2.6"></script>
+    <script>
+        if (typeof initApp === 'function') {
+            initApp();
+        }
+        if (typeof initCatalog === 'function') {
+            initCatalog();
+        }
+    </script>
+</body>
+
+</html>
